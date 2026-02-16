@@ -1,6 +1,0 @@
-@DistributedLibrary.Main_HostAddress = http://localhost:5135
-
-GET {{DistributedLibrary.Main_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
