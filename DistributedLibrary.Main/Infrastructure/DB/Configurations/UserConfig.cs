@@ -17,7 +17,7 @@ namespace DistributedLibrary.Main.Infrastructure.DB.Configurations
             b.Property(x => x.PasswordHash).HasMaxLength(2000).IsRequired();
             b.Property(x => x.CreatedAt).IsRequired().ValueGeneratedNever();
             b.Property(x => x.UpdatedAt).IsRequired(false).ValueGeneratedNever();
-            b.Property(x => x.Version).IsRowVersion();
+            b.Property(x => x.Version).IsConcurrencyToken(); // We are setting the ID in application level(constructor of User)
         }
     }
 }

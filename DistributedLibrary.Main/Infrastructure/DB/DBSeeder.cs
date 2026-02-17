@@ -34,8 +34,10 @@ namespace DistributedLibrary.Main.Infrastructure.DB
             );
 
             // Now add two users
-            var user1 = new User(Guid.NewGuid(), "CoolUser", "cool-email@gmail.com", "justanexamplepasswordhash");
-            var user2 = new User(Guid.NewGuid(), "UncoolUser", "not-cool-email@gmail.com", "justanotherexamplepasswordhash");
+            var user1 = new User(Guid.NewGuid(), "CoolUser", "cool-email@gmail.com");
+            var user2 = new User(Guid.NewGuid(), "UncoolUser", "not-cool-email@gmail.com");
+            user1.SetPasswordHash("justanexamplepasswordhash");
+            user2.SetPasswordHash("justanotherpasswordhashexample");
 
             db.Set<User>().AddRange(user1, user2);
 
