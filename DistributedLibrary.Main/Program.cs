@@ -1,4 +1,6 @@
 using DistributedLibrary.Main.Domain;
+using DistributedLibrary.Main.Features.Authors._Endpoints;
+using DistributedLibrary.Main.Features.Books._Endpoints;
 using DistributedLibrary.Main.Features.Users._Endpoints;
 using DistributedLibrary.Main.Infrastructure.DB;
 using FluentValidation;
@@ -57,7 +59,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Endpoints
 app.MapUserEndpoints();
+app.MapAuthorEndpoints();
+app.MapBookEndpoints();
 
 app.Run();
 

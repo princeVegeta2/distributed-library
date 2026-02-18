@@ -24,11 +24,21 @@
             AuthorId = authorId;
         }
 
-        public void ChangeTitle(string title)
+        public void ModifyBook(string? title, DateTimeOffset? publishedAt)
         {
+            bool modified = false;
             if (!string.IsNullOrWhiteSpace(title) && title != Title)
             {
                 Title = title;
+                modified = true;
+            }
+            if (publishedAt is not null && publishedAt.Value != PublishedAt)
+            {
+                PublishedAt = publishedAt.Value;
+                modified = true;
+            }
+            if (modified)
+            {
                 UpdatedAt = DateTimeOffset.UtcNow;
             }
         }

@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 
-namespace DistributedLibrary.IntegrationTests.Users
+namespace DistributedLibrary.IntegrationTests.Features.Users
 {
     public sealed class SignupTests : IClassFixture<CustomWebApplicationFactory>
     {
