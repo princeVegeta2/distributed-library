@@ -1,4 +1,5 @@
 ﻿using DistributedLibrary.Main.Features.Authors.CreateAuthor;
+using DistributedLibrary.Main.Features.Authors.DeleteAuthor;
 using DistributedLibrary.Main.Features.Authors.GetAuthor;
 using DistributedLibrary.Main.Features.Authors.ModifyAuthor;
 
@@ -10,6 +11,7 @@ namespace DistributedLibrary.Main.Features.Authors._Endpoints
             => app
                 .MapCreateAuthorEndpoint()
                 .MapGetAuthorEndpoint()
-                .MapModifyAuthorEndpoint();
+                .MapModifyAuthorEndpoint()
+                .MapDeleteAuthorEndpoint();
     }
 }

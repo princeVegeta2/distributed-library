@@ -1,13 +1,8 @@
-﻿using DistributedLibrary.IntegrationTests.Infrastructure;
+﻿using DistributedLibrary.IntegrationTests.Common; 
+using DistributedLibrary.IntegrationTests.Infrastructure;
 using DistributedLibrary.Main.Features.Books.GetBook;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace DistributedLibrary.IntegrationTests.Features.Books
 {
@@ -19,40 +14,18 @@ namespace DistributedLibrary.IntegrationTests.Features.Books
         {
             _client = factory.CreateClient();
         }
-        /// <summary>
-        /// Get book test
-        /// </summary>
-        /// <returns></returns>
+
         [Fact]
         public async Task GetBook_ValidRequest_Produces200AndBookWithAuthor()
         {
-
             // Arrange
-            var authorBody = new
-            {
-                Name = "Test Author"
-            };
-            var authorResult = await _client.PostAsJsonAsync("/api/authors/", authorBody);
-            var authorJson = JsonDocument.Parse(await authorResult.Content.ReadAsStringAsync());
-            Assert.True(authorJson.RootElement.TryGetProperty("id", out var authorIdEl));
-            var authorIdString = authorIdEl.GetString();
-            Assert.False(string.IsNullOrEmpty(authorIdString));
-            Assert.True(Guid.TryParse(authorIdString, out var authorId));
+            var expectedAuthorName = "Test Author";
+            var expectedBookTitle = "Test book";
+            var expectedPublishedAt = DateTimeOffset.UtcNow.AddYears(-1);
 
-            var bookBody = new
-            {
-                Title = "Test book",
-                PublishedAt = DateTimeOffset.UtcNow.AddYears(-1),
-                AuthorId = authorId
-            };
-            var bookResult = await _client.PostAsJsonAsync("/api/books/", bookBody);
-            Assert.Equal(HttpStatusCode.Created, bookResult.StatusCode);
-
-            var json = JsonDocument.Parse(await bookResult.Content.ReadAsStringAsync());
-            Assert.True(json.RootElement.TryGetProperty("id", out var bookIdEl));
-            var bookIdString = bookIdEl.GetString();
-            Assert.False(string.IsNullOrEmpty(bookIdString));
-            Assert.True(Guid.TryParse(bookIdString, out var bookId));
+            // Our shiny new Arrangers in action
+            var authorId = await _client.CreateAuthorAsync(expectedAuthorName);
+            var bookId = await _client.CreateBookAsync(authorId, expectedBookTitle, expectedPublishedAt);
 
             // Act
             var result = await _client.GetAsync($"/api/books/{bookId}");
@@ -62,17 +35,21 @@ namespace DistributedLibrary.IntegrationTests.Features.Books
 
             // Deserialize the response into the exact DTO
             var bookResponse = await result.Content.ReadFromJsonAsync<GetBookResponse>();
-
             Assert.NotNull(bookResponse);
 
+            // Assert Book fields
             Assert.Equal(bookId, bookResponse.Id);
-            Assert.Equal("Test book", bookResponse.Title);
+            Assert.Equal(expectedBookTitle, bookResponse.Title);
 
-            Assert.Equal(bookBody.PublishedAt, bookResponse.PublishedAt);
+            // Using the TimeSpan trick to prevent flaky DateTime precision errors
+            var timeDifference = (expectedPublishedAt - bookResponse.PublishedAt).Duration();
+            Assert.True(timeDifference < TimeSpan.FromSeconds(1), 
+                $"Expected {expectedPublishedAt}, but got {bookResponse.PublishedAt}");
 
+            // Assert Author fields
             Assert.NotNull(bookResponse.Author);
             Assert.Equal(authorId, bookResponse.Author.Id);
-            Assert.Equal("Test Author", bookResponse.Author.Name);
+            Assert.Equal(expectedAuthorName, bookResponse.Author.Name);
         }
     }
 }

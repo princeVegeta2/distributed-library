@@ -1,12 +1,8 @@
-﻿using DistributedLibrary.IntegrationTests.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using DistributedLibrary.IntegrationTests.Common; // Import your extension methods
+using DistributedLibrary.IntegrationTests.Infrastructure;
+using DistributedLibrary.Main.Features.Authors.GetAuthor; // Import the DTO namespace
 using System.Net;
 using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace DistributedLibrary.IntegrationTests.Features.Authors
 {
@@ -20,65 +16,32 @@ namespace DistributedLibrary.IntegrationTests.Features.Authors
         }
 
         [Fact]
-        public async Task ModifyAuthor_ValidRequest_ProducesNoContent()
+        public async Task ModifyAuthor_ValidRequest_ProducesNoContentAndPersistsChange()
         {
-            // Arrange
-            var authorBody = new
-            {
-                Name = "Test Author"
-            };
-            var authorResult = await _client.PostAsJsonAsync("/api/authors/", authorBody);
-            Assert.Equal(HttpStatusCode.Created, authorResult.StatusCode);
-            var authorJson = JsonDocument.Parse(await  authorResult.Content.ReadAsStringAsync());
-            Assert.True(authorJson.RootElement.TryGetProperty("id", out var authorIdEl));
-            var authorIdString = authorIdEl.GetString();
-            Assert.False(string.IsNullOrEmpty(authorIdString));
-            Assert.True(Guid.TryParse(authorIdString, out var authorId));
+            // Arrange - Create an author cleanly using the helper
+            var authorId = await _client.CreateAuthorAsync();
 
             var modifyBody = new
             {
                 Name = "New Name"
             };
 
-            // Act
-            var result = await _client.PatchAsJsonAsync($"/api/authors/{authorId}", modifyBody);
+            // Act 1: Send the Patch request
+            var patchResult = await _client.PatchAsJsonAsync($"/api/authors/{authorId}", modifyBody);
 
-            // Assert
-            Assert.Equal(HttpStatusCode.NoContent, result.StatusCode);
-        }
+            // Assert 1: Verify the API returns 204 No Content
+            Assert.Equal(HttpStatusCode.NoContent, patchResult.StatusCode);
 
-        [Fact]
-        public async Task ModifyAuthor_ValidRequest_PersistsChanges()
-        {
-            // Arrange
-            var authorBody = new
-            {
-                Name = "Test Author"
-            };
-            var authorResult = await _client.PostAsJsonAsync("/api/authors/", authorBody);
-            Assert.Equal(HttpStatusCode.Created, authorResult.StatusCode);
-            var authorJson = JsonDocument.Parse(await authorResult.Content.ReadAsStringAsync());
-            Assert.True(authorJson.RootElement.TryGetProperty("id", out var authorIdEl));
-            var authorIdString = authorIdEl.GetString();
-            Assert.False(string.IsNullOrEmpty(authorIdString));
-            Assert.True(Guid.TryParse(authorIdString, out var authorId));
-
-            var modifyBody = new
-            {
-                Name = "New Name"
-            };
-
-            // Act
-            var result = await _client.PatchAsJsonAsync($"/api/authors/{authorId}", modifyBody);
-
-            // Assert
-            Assert.Equal(HttpStatusCode.NoContent, result.StatusCode);
+            // Act 2: Fetch the author to verify the change was persisted to the DB
             var getResult = await _client.GetAsync($"/api/authors/{authorId}");
             Assert.Equal(HttpStatusCode.OK, getResult.StatusCode);
-            var json = JsonDocument.Parse(await  getResult.Content.ReadAsStringAsync());
-            Assert.True(json.RootElement.TryGetProperty("name", out var authorNameEl));
-            var authorName = authorNameEl.GetString();
-            Assert.Equal(modifyBody.Name, authorName);
+
+            // Assert 2: Verify the content matches
+            var authorResponse = await getResult.Content.ReadFromJsonAsync<GetAuthorResponse>();
+            Assert.NotNull(authorResponse);
+
+            Assert.Equal(authorId, authorResponse.Id);
+            Assert.Equal(modifyBody.Name, authorResponse.Name);
         }
     }
 }
