@@ -3,6 +3,7 @@ using DistributedLibrary.Main.Features.Authors._Endpoints;
 using DistributedLibrary.Main.Features.Books._Endpoints;
 using DistributedLibrary.Main.Features.Users._Endpoints;
 using DistributedLibrary.Main.Infrastructure.DB;
+using DistributedLibrary.Main.Infrastructure.Webhooks;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.Sqlite;
@@ -38,6 +39,18 @@ builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly, includeInte
 
 // Password hasher
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+
+// Webhook wiring
+builder.Services.AddSingleton<WebhookDispatcher>();
+builder.Services.AddSingleton<IWebhookDispatcher>(sp => sp.GetRequiredService<WebhookDispatcher>());
+// Background service
+builder.Services.AddHostedService<WebhookBackgroundWorker>();
+// Http client
+builder.Services.AddHttpClient("LedgerClient", client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5283");
+    client.Timeout = TimeSpan.FromSeconds(5);
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

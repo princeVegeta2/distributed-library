@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistributedLibrary.Main", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistributedLibrary.IntegrationTests", "DistributedLibrary.IntegrationTests\DistributedLibrary.IntegrationTests.csproj", "{FD296BD8-58FF-45DC-A4CA-66600AC865E0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistributedLibrary.Ledger", "DistributedLibrary.Ledger\DistributedLibrary.Ledger.csproj", "{8D45B7FA-BD6D-4FE5-9D6A-1649F1DAEC16}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{FD296BD8-58FF-45DC-A4CA-66600AC865E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD296BD8-58FF-45DC-A4CA-66600AC865E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD296BD8-58FF-45DC-A4CA-66600AC865E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D45B7FA-BD6D-4FE5-9D6A-1649F1DAEC16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D45B7FA-BD6D-4FE5-9D6A-1649F1DAEC16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D45B7FA-BD6D-4FE5-9D6A-1649F1DAEC16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D45B7FA-BD6D-4FE5-9D6A-1649F1DAEC16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
