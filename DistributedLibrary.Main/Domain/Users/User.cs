@@ -1,6 +1,6 @@
 ﻿// ./Domain/User.cs
 
-namespace DistributedLibrary.Main.Domain
+namespace DistributedLibrary.Main.Domain.Users
 {
     /// <summary>
     /// This is the the User entity

@@ -1,4 +1,7 @@
-﻿namespace DistributedLibrary.Main.Domain
+﻿using DistributedLibrary.Main.Domain.Authors;
+using DistributedLibrary.Main.Domain.Users;
+
+namespace DistributedLibrary.Main.Domain.Books
 {
     /// <summary>
     /// The Book Entity
@@ -12,6 +15,8 @@
         public DateTimeOffset? UpdatedAt { get; private set; } = null;
         public Author Author { get; private set; } = default!;
         public Guid AuthorId { get; private set; } = default!;
+        public User? RentedTo { get; private set; } = null;
+        public Guid? UserId { get; private set; } = null;
 
         // EF
         private Book() { }
@@ -41,6 +46,11 @@
             {
                 UpdatedAt = DateTimeOffset.UtcNow;
             }
+        }
+
+        public void RentTo(Guid userId)
+        {
+            UserId = userId;
         }
     }
 }

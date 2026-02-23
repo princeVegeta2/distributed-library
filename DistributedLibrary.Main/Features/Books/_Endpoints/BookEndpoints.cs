@@ -1,7 +1,9 @@
 ﻿using DistributedLibrary.Main.Features.Books.CreateBook;
 using DistributedLibrary.Main.Features.Books.DeleteBook;
+using DistributedLibrary.Main.Features.Books.GetAllBooks;
 using DistributedLibrary.Main.Features.Books.GetBook;
 using DistributedLibrary.Main.Features.Books.ModifyBook;
+using DistributedLibrary.Main.Features.Books.RentBook;
 
 namespace DistributedLibrary.Main.Features.Books._Endpoints
 {
@@ -12,6 +14,8 @@ namespace DistributedLibrary.Main.Features.Books._Endpoints
                 .MapCreateBookEndpoint()
                 .MapGetBookEndpoint()
                 .MapModifyBookEndpoint()
-                .MapDeleteBookEndpoint();
+                .MapDeleteBookEndpoint()
+                .MapRentBookEndpoint()
+                .MapGetAllBooksEndpoint();
     }
 }

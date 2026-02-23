@@ -1,4 +1,6 @@
-﻿namespace DistributedLibrary.Main.Domain
+﻿using DistributedLibrary.Main.Domain.Books;
+
+namespace DistributedLibrary.Main.Domain.Authors
 {
     /// <summary>
     /// Author entity

@@ -1,4 +1,6 @@
-﻿using DistributedLibrary.Main.Domain;
+﻿using DistributedLibrary.Main.Domain.Authors;
+using DistributedLibrary.Main.Domain.Books;
+using DistributedLibrary.Main.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace DistributedLibrary.Main.Infrastructure.DB

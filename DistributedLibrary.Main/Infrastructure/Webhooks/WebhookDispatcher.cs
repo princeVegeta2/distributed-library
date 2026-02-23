@@ -1,5 +1,4 @@
-﻿
-using System.Threading.Channels;
+﻿using System.Threading.Channels;
 
 namespace DistributedLibrary.Main.Infrastructure.Webhooks
 {

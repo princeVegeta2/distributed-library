@@ -1,4 +1,4 @@
-using DistributedLibrary.Main.Domain;
+using DistributedLibrary.Main.Domain.Users;
 using DistributedLibrary.Main.Features.Authors._Endpoints;
 using DistributedLibrary.Main.Features.Books._Endpoints;
 using DistributedLibrary.Main.Features.Users._Endpoints;

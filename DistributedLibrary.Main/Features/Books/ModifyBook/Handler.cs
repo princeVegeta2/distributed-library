@@ -1,5 +1,5 @@
 ﻿using DistributedLibrary.Main.Common;
-using DistributedLibrary.Main.Domain;
+using DistributedLibrary.Main.Domain.Books;
 using DistributedLibrary.Main.Infrastructure.DB;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

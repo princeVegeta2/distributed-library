@@ -1,4 +1,4 @@
-﻿using DistributedLibrary.Main.Domain;
+﻿using DistributedLibrary.Main.Domain.Authors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

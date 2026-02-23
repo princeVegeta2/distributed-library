@@ -1,4 +1,5 @@
-﻿using DistributedLibrary.Main.Features.Users.SignUp;
+﻿using DistributedLibrary.Main.Features.Users.GetAllUsers;
+using DistributedLibrary.Main.Features.Users.SignUp;
 
 namespace DistributedLibrary.Main.Features.Users._Endpoints
 {
@@ -6,6 +7,7 @@ namespace DistributedLibrary.Main.Features.Users._Endpoints
     {
         public static IEndpointRouteBuilder MapUserEndpoints(this IEndpointRouteBuilder app)
             => app
-                .MapSignupEndpoint();
+                .MapSignupEndpoint()
+                .MapGetAllUsersEndpoint();
     }
 }
